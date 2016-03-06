@@ -1,0 +1,44 @@
+repositories {
+    mavenCentral()
+}
+
+//plugins for Gradle
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+
+jar {
+    baseName = 'movieApi'
+    version =  '0.1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework:spring-jdbc")
+    compile("org.xerial:sqlite-jdbc:3.8.9.1")
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile("junit:junit")
+}
+
+buildscript() {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE")
+        classpath("org.xerial:sqlite-jdbc:3.8.9.1")
+    }
+}
+
+// Set default task which runs when no parameters are specified (just ./gradlew)
+defaultTasks 'build', 'run'
+
+// Configuration for the build task (./gradlew build). Force it to run clean before build.
+// mustRunAfter must be specified otherwise the clean and build run at the same time.
+build.dependsOn clean
+build.mustRunAfter clean
